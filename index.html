@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>QR Code Generator - Create Custom QR Codes Instantly</title>
+  <meta name="title" content="QR Code Generator - Create Custom QR Codes Instantly">
+  <meta name="description" content="Free online QR code generator. Create customizable QR codes for URLs, text, email, phone, WiFi, Bitcoin, SMS, and vCard. Download in PNG, JPG, or SVG formats.">
+  <meta name="keywords" content="QR code, QR generator, QR code maker, custom QR code, free QR code, URL QR code, WiFi QR code, vCard QR code">
+  <meta name="author" content="QR Code Generator">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://qr-code-generator.replit.app/">
+  <meta property="og:title" content="QR Code Generator - Create Custom QR Codes Instantly">
+  <meta property="og:description" content="Free online QR code generator. Create customizable QR codes for URLs, text, email, phone, WiFi, and more. Download in PNG, JPG, or SVG.">
+  <meta property="og:image" content="https://qr-code-generator.replit.app/favicon.svg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://qr-code-generator.replit.app/">
+  <meta property="twitter:title" content="QR Code Generator - Create Custom QR Codes Instantly">
+  <meta property="twitter:description" content="Free online QR code generator. Create customizable QR codes for URLs, text, email, phone, WiFi, and more. Download in PNG, JPG, or SVG.">
+  <meta property="twitter:image" content="https://qr-code-generator.replit.app/favicon.svg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#8B5CF6">
+  <meta name="msapplication-TileColor" content="#8B5CF6">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://qr-code-generator.replit.app/">
+  
+  <!-- External Resources -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            border: 'hsl(var(--border))',
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            card: 'hsl(var(--card))',
+            'card-foreground': 'hsl(var(--card-foreground))',
+            muted: 'hsl(var(--muted))',
+            'muted-foreground': 'hsl(var(--muted-foreground))',
+            primary: 'hsl(var(--primary))',
+            'primary-foreground': 'hsl(var(--primary-foreground))',
+            accent: 'hsl(var(--accent))',
+            'accent-foreground': 'hsl(var(--accent-foreground))',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen">
+  <div class="min-h-screen bg-gradient-to-br from-purple-50 via-background to-blue-50 dark:from-purple-950/20 dark:via-background dark:to-blue-950/20">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-card border-b border-border">
+      <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold">QR Code Generator</h1>
+            <p class="text-xs text-muted-foreground">Create custom QR codes instantly</p>
+          </div>
+        </div>
+        <button id="themeToggle" data-testid="button-theme-toggle" class="btn btn-ghost p-2 rounded-full" title="Toggle theme" aria-label="Toggle dark mode">
+          <svg id="sunIcon" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg id="moonIcon" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <!-- Left Column - Input & Settings -->
+        <div class="space-y-6">
+          <!-- Input Type Tabs -->
+          <div class="glass-card rounded-xl p-4">
+            <div class="flex flex-wrap gap-2" id="inputTypeTabs" data-testid="tabs-input-type" role="tablist">
+              <button class="input-tab active" data-type="url" data-testid="tab-url" role="tab" aria-selected="true">URL</button>
+              <button class="input-tab" data-type="text" data-testid="tab-text" role="tab" aria-selected="false">Text</button>
+              <button class="input-tab" data-type="email" data-testid="tab-email" role="tab" aria-selected="false">Email</button>
+              <button class="input-tab" data-type="phone" data-testid="tab-phone" role="tab" aria-selected="false">Phone</button>
+              <button class="input-tab" data-type="bitcoin" data-testid="tab-bitcoin" role="tab" aria-selected="false">Bitcoin</button>
+              <button class="input-tab" data-type="wifi" data-testid="tab-wifi" role="tab" aria-selected="false">WiFi</button>
+              <button class="input-tab" data-type="sms" data-testid="tab-sms" role="tab" aria-selected="false">SMS</button>
+              <button class="input-tab" data-type="vcard" data-testid="tab-vcard" role="tab" aria-selected="false">vCard</button>
+            </div>
+          </div>
+
+          <!-- Input Field -->
+          <div class="glass-card rounded-xl p-6">
+            <label class="form-label" id="inputLabel" for="contentInput">Enter URL</label>
+            <textarea 
+              id="contentInput" 
+              data-testid="input-content"
+              class="form-input resize-none" 
+              rows="3" 
+              placeholder="https://example.com"
+              aria-describedby="inputHint"
+            ></textarea>
+            <p class="mt-2 text-xs text-muted-foreground" id="inputHint">Enter the URL you want to encode</p>
+          </div>
+
+          <!-- Settings Panel -->
+          <div class="glass-card rounded-xl overflow-hidden">
+            <!-- Shape & Color Section -->
+            <div class="border-b border-border">
+              <div class="collapsible-header" data-section="shapeColor" role="button" aria-expanded="true">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                  </svg>
+                  <span class="font-medium">Shape & Color</span>
+                </div>
+                <svg class="w-5 h-5 transition-transform collapsible-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              <div class="collapsible-content open" id="shapeColorContent">
+                <div class="p-4 space-y-4">
+                  <!-- Size Slider -->
+                  <div>
+                    <div class="flex justify-between mb-2">
+                      <label class="text-sm font-medium" for="sizeSlider">Size</label>
+                      <span class="text-sm text-muted-foreground" id="sizeValue">256px</span>
+                    </div>
+                    <input type="range" id="sizeSlider" data-testid="slider-size" class="range-slider" min="128" max="512" value="256" step="8" aria-valuemin="128" aria-valuemax="512" aria-valuenow="256">
+                  </div>
+
+                  <!-- Error Correction -->
+                  <div>
+                    <label class="text-sm font-medium block mb-2">Error Correction</label>
+                    <div class="flex gap-2" id="errorLevelBtns" role="group" aria-label="Error correction level">
+                      <button class="error-level-btn" data-level="L" data-testid="btn-error-L" title="7% recovery">L</button>
+                      <button class="error-level-btn active" data-level="M" data-testid="btn-error-M" title="15% recovery">M</button>
+                      <button class="error-level-btn" data-level="Q" data-testid="btn-error-Q" title="25% recovery">Q</button>
+                      <button class="error-level-btn" data-level="H" data-testid="btn-error-H" title="30% recovery">H</button>
+                    </div>
+                  </div>
+
+                  <!-- Colors -->
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-sm font-medium block mb-2" for="fgColor">Foreground</label>
+                      <div class="flex items-center gap-2">
+                        <input type="color" id="fgColor" data-testid="input-fg-color" class="color-input" value="#000000" aria-label="Foreground color">
+                        <input type="text" id="fgColorText" class="form-input text-xs" value="#000000" style="width: 5rem;" aria-label="Foreground color hex">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-sm font-medium block mb-2" for="bgColor">Background</label>
+                      <div class="flex items-center gap-2">
+                        <input type="color" id="bgColor" data-testid="input-bg-color" class="color-input" value="#FFFFFF" aria-label="Background color">
+                        <input type="text" id="bgColorText" class="form-input text-xs" value="#FFFFFF" style="width: 5rem;" aria-label="Background color hex">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Corner Style -->
+                  <div>
+                    <label class="text-sm font-medium block mb-2">Corner Style</label>
+                    <div class="flex" role="group" aria-label="Corner style">
+                      <button class="corner-btn active" data-corner="square" data-testid="btn-corner-square">
+                        <svg class="w-4 h-4 mx-auto" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                          <rect x="2" y="2" width="12" height="12"/>
+                        </svg>
+                        <span class="text-xs block mt-1">Square</span>
+                      </button>
+                      <button class="corner-btn" data-corner="rounded" data-testid="btn-corner-rounded">
+                        <svg class="w-4 h-4 mx-auto" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                          <rect x="2" y="2" width="12" height="12" rx="3"/>
+                        </svg>
+                        <span class="text-xs block mt-1">Rounded</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logo Section -->
+            <div class="border-b border-border">
+              <div class="collapsible-header" data-section="logo" role="button" aria-expanded="false">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span class="font-medium">Logo</span>
+                </div>
+                <svg class="w-5 h-5 transition-transform collapsible-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              <div class="collapsible-content" id="logoContent">
+                <div class="p-4 space-y-4">
+                  <div class="flex items-center gap-4">
+                    <div class="logo-preview hidden" id="logoPreview">
+                      <img id="logoImage" src="" alt="Logo preview">
+                      <button id="removeLogo" data-testid="button-remove-logo" class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-xs" aria-label="Remove logo">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <label class="btn btn-outline cursor-pointer">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                      </svg>
+                      Upload Logo
+                      <input type="file" id="logoInput" data-testid="input-logo" class="hidden" accept="image/*" aria-label="Upload logo image">
+                    </label>
+                  </div>
+                  <div id="logoOpacityContainer" class="hidden">
+                    <div class="flex justify-between mb-2">
+                      <label class="text-sm font-medium" for="opacitySlider">Logo Opacity</label>
+                      <span class="text-sm text-muted-foreground" id="opacityValue">100%</span>
+                    </div>
+                    <input type="range" id="opacitySlider" data-testid="slider-opacity" class="range-slider" min="0" max="100" value="100" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frame Section -->
+            <div>
+              <div class="collapsible-header" data-section="frame" role="button" aria-expanded="false">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                  </svg>
+                  <span class="font-medium">Frame</span>
+                </div>
+                <svg class="w-5 h-5 transition-transform collapsible-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              <div class="collapsible-content" id="frameContent">
+                <div class="p-4 space-y-4">
+                  <div class="flex flex-wrap gap-2" id="frameBtns" role="group" aria-label="Frame template">
+                    <button class="frame-btn active" data-frame="none" data-testid="btn-frame-none">None</button>
+                    <button class="frame-btn" data-frame="simple" data-testid="btn-frame-simple">Simple</button>
+                    <button class="frame-btn" data-frame="scanme" data-testid="btn-frame-scanme">Scan Me</button>
+                    <button class="frame-btn" data-frame="modern" data-testid="btn-frame-modern">Modern</button>
+                    <button class="frame-btn" data-frame="minimal" data-testid="btn-frame-minimal">Minimal</button>
+                    <button class="frame-btn" data-frame="decorative" data-testid="btn-frame-decorative">Decorative</button>
+                  </div>
+                  <div id="frameTextContainer" class="hidden">
+                    <label class="form-label" for="frameText">Frame Text</label>
+                    <input type="text" id="frameText" data-testid="input-frame-text" class="form-input" placeholder="SCAN ME" maxlength="30">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reset Button -->
+          <button id="resetBtn" data-testid="button-reset" class="btn btn-outline w-full">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Reset All Settings
+          </button>
+        </div>
+
+        <!-- Right Column - QR Preview -->
+        <div class="lg:sticky lg:top-24 lg:self-start">
+          <div class="glass-card rounded-xl p-8 flex flex-col items-center gap-6">
+            <div class="relative">
+              <canvas id="qrCanvas" data-testid="canvas-qr-preview" class="hidden" aria-label="Generated QR code"></canvas>
+              <div id="qrPlaceholder" class="qr-placeholder">
+                <div class="grid grid-cols-3 gap-1 opacity-30">
+                  <div class="w-8 h-8 bg-foreground rounded-sm"></div>
+                  <div class="w-8 h-8"></div>
+                  <div class="w-8 h-8 bg-foreground rounded-sm"></div>
+                  <div class="w-8 h-8"></div>
+                  <div class="w-8 h-8 bg-muted-foreground rounded-sm"></div>
+                  <div class="w-8 h-8"></div>
+                  <div class="w-8 h-8 bg-foreground rounded-sm"></div>
+                  <div class="w-8 h-8"></div>
+                  <div class="w-8 h-8"></div>
+                </div>
+                <p class="text-center text-sm text-muted-foreground">
+                  Enter content to generate<br>your QR code
+                </p>
+              </div>
+              <div id="loadingSpinner" class="hidden absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm rounded-lg" aria-label="Generating QR code">
+                <svg class="w-8 h-8 animate-spin text-primary" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Download Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 w-full" id="downloadBtns" role="group" aria-label="Download options">
+              <button class="btn btn-primary flex-1 min-w-[100px]" data-format="png" data-testid="button-download-png" disabled>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                PNG
+              </button>
+              <button class="btn btn-outline flex-1 min-w-[100px]" data-format="jpg" data-testid="button-download-jpg" disabled>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                JPG
+              </button>
+              <button class="btn btn-outline flex-1 min-w-[100px]" data-format="svg" data-testid="button-download-svg" disabled>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+                SVG
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border mt-16 py-8">
+      <div class="container mx-auto px-4 text-center text-sm text-muted-foreground">
+        <p>QR Code Generator - Create custom QR codes for URLs, text, email, phone, and more.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Application JavaScript -->
+  <script src="js/app.js"></script>
+</body>
+</html>
